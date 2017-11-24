@@ -36,7 +36,7 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * 이메일/비밀번호를 통한 로그인을 제공하는 로그인 스크린
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mStudentIDView;
+    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -71,13 +71,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         //splash
         Intent intent = new Intent(getApplicationContext(), Splash.class);
         startActivity(intent);
 
         // Set up the login form.
-        mStudentIDView = (AutoCompleteTextView) findViewById(R.id.studentID);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -92,8 +91,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mStudentIDSignInButton = (Button) findViewById(R.id.studentID_sign_in_button);
-        mStudentIDSignInButton.setOnClickListener(new OnClickListener() {
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -120,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mStudentIDView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -135,7 +134,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     * Callback received when a permissions request has been completed.
+     * 승인요청이 완료되면 받는 callback
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -149,59 +148,65 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * 로그인 양식이 정한 계정에 로그인하거나 등록하기
+     * 양식에 오류(부정확, 필수기재사항이 빠짐 등)가 있는 경우,
+     * 오류가 나타나며 실제 로그인 시도는 이루어지지 않음
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
         }
 
-        // Reset errors.
-        mStudentIDView.setError(null);
+        // 오류 재설정
+        mEmailView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
-        String studentID = mStudentIDView.getText().toString();
+        // 로그인 시도 시점에 값 저장하기
+        String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // 비밀번호 4자 이하일 때
+        // 비밀번호 유효성 체크
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        // 학번 안쳤을 때
-        if (TextUtils.isEmpty(studentID)) {
-            mStudentIDView.setError(getString(R.string.error_field_required));
-            focusView = mStudentIDView;
+        // 이메일 공란일 경우
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
             cancel = true;
         }
 
-        // 학번 치고 비밀번호 안쳤을 때
-        if (!TextUtils.isEmpty(studentID) && TextUtils.isEmpty(password)) {
+        // 비밀번호 공란일 경우
+        if (!TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }
 
-
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+            // 오류가 나온 경우 로그인을 시도하지 않고 오류가 있는 첫번째 양식필드로 가기
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            // progress spinner보여주고 사용자 로그인 시도를 수행하기
             showProgress(true);
-            mAuthTask = new UserLoginTask(studentID, password);
+            mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
+    }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
@@ -210,13 +215,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     * Shows the progress UI and hides the login form.
+     * progress UI를 보여주고 로그인양식 감추기
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
+        // 스피너 애니메이션 구현부분
+        // 가능한 경우 progress spinner를 페이드인하려면 APIs를 사용할 것!
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -264,14 +268,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> studentIDs = new ArrayList<>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            studentIDs.add(cursor.getString(ProfileQuery.ADDRESS));
+            emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
 
-        addStudentIDsToAutoComplete(studentIDs);
+        addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -279,13 +283,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    private void addStudentIDsToAutoComplete(List<String> studentIDsCollection) {
+    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, studentIDsCollection);
+                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mStudentIDView.setAdapter(adapter);
+        mEmailView.setAdapter(adapter);
     }
 
 
@@ -305,11 +309,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mStudentID;
+        private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String studentID, String password) {
-            mStudentID = studentID;
+        UserLoginTask(String email, String password) {
+            mEmail = email;
             mPassword = password;
         }
 
@@ -326,7 +330,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 //            for (String credential : DUMMY_CREDENTIALS) {
 //                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mStudentID)) {
+//                if (pieces[0].equals(mEmail)) {
 //                    // Account exists, return true if the password matches.
 //                    return pieces[1].equals(mPassword);
 //                }
@@ -342,9 +346,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent intent = new Intent(LoginActivity.this, CreateActivity.class); //로그인 성공시 이동할 화면
-                startActivity(intent);
-                //finish();
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

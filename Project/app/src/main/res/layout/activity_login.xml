@@ -41,11 +41,11 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/studentID"
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Student ID"
-                    android:inputType="numberSigned"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -70,7 +70,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/studentID_sign_in_button"
+                android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
