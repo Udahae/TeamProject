@@ -205,7 +205,6 @@ public class CreateMemory extends AppCompatActivity {
             public void onProviderEnabled(String s) {}
             public void onProviderDisabled(String s) {}
         });
-
 //        Toast.makeText(getApplicationContext(),"Service Started",Toast.LENGTH_SHORT).show();
     }
     //  위도 경도를 주소로 변경하는 함수

@@ -88,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.maps){
-            // 여기에 액션을 취하기z
+            // 여기에 액션을 취하기
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
             Toast.makeText(getApplicationContext(),"MAPs",Toast.LENGTH_SHORT).show();
             return true;
         }else if(id == R.id.insert){
