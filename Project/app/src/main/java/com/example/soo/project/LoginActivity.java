@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity{
         Intent intent = new Intent(getApplicationContext(), Splash.class);
         startActivity(intent);
     }
-
+// 이앱에서 사용하는 권한에대한 물음을 하는 부분이다.
     private void setPermission() {
         String[] permissions = new String[]{android.Manifest.permission.INTERNET, android.Manifest.permission.ACCESS_COARSE_LOCATION
                 , android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.READ_EXTERNAL_STORAGE};

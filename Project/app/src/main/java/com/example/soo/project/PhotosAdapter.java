@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
+// 메인 화면에 추가되도록 하는 apater부분 여기서 실제 내용이 입력이 된다.
 public class PhotosAdapter extends BaseAdapter {
     private final Context mContext;
     private final List<Photo> photos;
@@ -56,7 +57,6 @@ public class PhotosAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // 1
         final Photo book = photos.get(position);
-        Log.i("HOHO",book.getImageUrl());
         // 2
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);

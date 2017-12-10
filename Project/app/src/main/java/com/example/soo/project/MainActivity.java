@@ -27,12 +27,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
-    boolean isOpen = false;
+    boolean music = false;
     private List<Photo> photos = null;
     FeedReaderDBOpenHelper openHelper;
     SQLiteDatabase db;
     @Override
+
+    //메인 화면에 액션을 취하는 부분이다.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         PhotosAdapter photosAdapter = new PhotosAdapter(this, photos);
         gridView.setAdapter(photosAdapter);
     }
-
+// 현재 가지고 있는 게시글을 List로 만드는 것이다.
     private void setPhotos() {
         photos = new ArrayList<Photo>();
         String[] projection1 = {FeedReaderContract.FeedEntry._ID, FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL, FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu,menu);
         return true;
     }
-
+// 메인 상단에 있는 메뉴에 있는 아이콘의 역할을 할당하는 부분이다.
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
@@ -96,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
         }else if(id == R.id.insert){
             Intent intent = new Intent(this,CreateMemory.class);
             startActivity(intent);
+        }else if(id == R.id.music){
+            if(music == false){
+                item.setIcon(R.drawable.ic_pause_black_24dp);
+                music = true;
+                Intent intent = new Intent(this, MyService.class);
+                startService(intent);
+            }else if(music == true){
+                item.setIcon(R.drawable.ic_play_arrow_black_24dp);
+                music = false;
+                Intent intent = new Intent(this, MyService.class);
+                stopService(intent);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
