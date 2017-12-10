@@ -1,25 +1,22 @@
 package com.example.soo.project;
 
-import android.*;
-import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -33,31 +30,33 @@ public class MainActivity extends AppCompatActivity {
     private List<Photo> photos = null;
     FeedReaderDBOpenHelper openHelper;
     SQLiteDatabase db;
+
+
     @Override
 
     //메인 화면에 액션을 취하는 부분이다.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        setPermissionStorage();
+
         Intent intent = getIntent();
         openHelper = new FeedReaderDBOpenHelper(this);
         db = openHelper.getReadableDatabase();
         setPhotos();
-        GridView gridView = (GridView)findViewById(R.id.gridview);
+        GridView gridView = (GridView) findViewById(R.id.gridview);
         PhotosAdapter photosAdapter = new PhotosAdapter(this, photos);
         gridView.setAdapter(photosAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                intent.putExtra("num",photos.get(position).getNumber());
+                intent.putExtra("num", photos.get(position).getNumber());
                 startActivity(intent);
             }
         });
+
+
     }
-
-
 
     protected void onStart(){
         super.onStart();

@@ -101,6 +101,8 @@ public class LoginActivity extends AppCompatActivity{
                     // 회원가입 텍스트를 누른 경우
                     Intent intent2 = new Intent(LoginActivity.this, CreateActivity.class);
                     startActivity(intent2);
+//                    Intent intent3 = new Intent(getApplicationContext(),Locationalarm.class);
+//                    startActivity(intent3);
 //                    finish();
                     break;
                 case R.id.login:
