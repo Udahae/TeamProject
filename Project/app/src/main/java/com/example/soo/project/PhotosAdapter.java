@@ -73,20 +73,9 @@ public class PhotosAdapter extends BaseAdapter {
 
 //        // 4
 
-
-
-//        try {
-//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), Uri.parse(book.getImageUrl()));
-//            Bitmap bitmap = getImageBitmap(book.getImageUrl());
-            imageView.setImageURI(Uri.parse("file:///"+book.getImageUrl()));
-            nameTextView.setText(book.getEmail());
-            authorTextView.setText(book.getTitle());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-
+        imageView.setImageURI(Uri.parse("file:///"+book.getImageUrl()));
+        nameTextView.setText(book.getEmail());
+        authorTextView.setText(book.getTitle());
 
         return convertView;
     }

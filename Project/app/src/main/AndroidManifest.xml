@@ -9,22 +9,23 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera2"
-        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/re"
         android:label="RE:memory"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/re_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
             android:theme="@style/RE_ProjectTheme">
@@ -40,11 +41,12 @@
         <activity android:name=".CreateActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Photo" />
-        <activity android:name=".PhotosAdapter"></activity>
+        <activity android:name=".PhotosAdapter" />
         <activity
             android:name=".CreateMemory"
             android:label="@string/title_activity_create__memory"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DetailActivity"></activity>
     </application>
 
 </manifest>
