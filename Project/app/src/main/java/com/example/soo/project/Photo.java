@@ -5,30 +5,21 @@ package com.example.soo.project;
  */
 
 public class Photo {
-//    private final int name;
-//    private final int author;
-//    private final int imageResource;
-    private boolean isFavorite = false;
+
     private final String imageUrl;
     private final String email;
     private final String title;
+    private final int number;
 
-//    public Photo(int name, int author, int imageResource, String imageUrl) {
-//        this.name = name;
-//        this.author = author;
-//        this.imageResource = imageResource;
-//        this.imageUrl = imageUrl;
-//    }
 
-    public Photo(String email, String title, String imageUrl){
+    public Photo(int number,String email, String title, String imageUrl){
+        this.number = number;
         this.email = email;
         this.title = title;
         this.imageUrl = imageUrl;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
-    }
+    public int getNumber(){ return number; }
 
     public String getEmail() {
         return email;
@@ -38,16 +29,6 @@ public class Photo {
         return title;
     }
 
-    public boolean getIsFavorite() {
-        return isFavorite;
-    }
-    public void setIsFavorite(boolean isFavorite) {
-        this.isFavorite = isFavorite;
-    }
-
-    public void toggleFavorite() {
-        isFavorite = !isFavorite;
-    }
 
     public String getImageUrl() {
         return imageUrl;

@@ -84,9 +84,7 @@ public class LoginActivity extends AppCompatActivity{
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this,"권한허용 동의",Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this,"권한허용 비동의",Toast.LENGTH_LONG).show();
                 }
                 return;
             }

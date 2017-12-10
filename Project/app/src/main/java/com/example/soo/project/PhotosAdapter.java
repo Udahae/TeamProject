@@ -36,22 +36,19 @@ public class PhotosAdapter extends BaseAdapter {
         this.photos = photos;
     }
 
-    // 2
     @Override
     public int getCount() {
         return photos.size();
     }
 
-    // 3
     @Override
-    public long getItemId(int position) {
-        return 0;
+    public Photo getItem(int i) {
+        return photos.get(i);
     }
 
-    // 4
     @Override
-    public Object getItem(int position) {
-        return null;
+    public long getItemId(int i) {
+        return i;
     }
 
     // 5
@@ -78,22 +75,6 @@ public class PhotosAdapter extends BaseAdapter {
         authorTextView.setText(book.getTitle());
 
         return convertView;
-    }
-
-    private Bitmap getImageBitmap(String imageUrl) {
-        Bitmap bitmap = null;
-        try {
-            URL aURL = new URL(imageUrl);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bitmap = BitmapFactory.decodeStream(bis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-
     }
 
 }
